@@ -21,6 +21,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--srt", help="Path to the SRT file to correct.")
     parser.add_argument("--ass", help="Path to the ASS file to correct.")
+    parser.add_argument("--txt", help="Path to the TXT file to correct.")
     return parser.parse_args()
 
 
@@ -95,7 +96,11 @@ def main() -> int:
         ass_path = Path(args.ass).expanduser().resolve()
         total += fix_file(ass_path, corrections)
 
-    if not args.srt and not args.ass:
+    if args.txt:
+        txt_path = Path(args.txt).expanduser().resolve()
+        total += fix_file(txt_path, corrections)
+
+    if not args.srt and not args.ass and not args.txt:
         print("ERROR: At least one of --srt or --ass must be provided.", file=sys.stderr)
         return 1
 
